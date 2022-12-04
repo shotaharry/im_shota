@@ -16,10 +16,12 @@ function bead() {
     });
 }
 
-function block() {
-    return Matter.Bodies.rectangle(Math.random() *400+100, 50, 105,30, {
+
+function block(box,url) {
+    return Matter.Bodies.rectangle(Math.random() *344+108, 50, 216,60, {
 //               id : 'phoneBody',
               density: 30.04,
+//               angle:Math.random()*1.57,
               friction: 0.15,
               frictionAir: 0.15,
               restitution: 0.2,
@@ -27,13 +29,44 @@ function block() {
 //                 fillStyle: '#ffffff',
 //                 strokeStyle: 'black',
 //                 lineWidth: 1,
-                text: {
-                content: "FN",
-                color: "#000000",
-                size: 15
-              }},
-              url: "https://stackoverflow.com/questions/44996124/matter-js-option-to-add-html-to-body"
+//                 text: {
+//                 content: "AAA",
+//                 color: "#000000",
+//                 size: 20,
+//                 family:"Papyrus",}
+            sprite: { //スプライトの設定
+					texture: box,//スプライトに使うテクスチャ画像を指定
+					xScale: 0.185, yScale: 0.185, 
+				}
+              },
+              url: url,
             });
+
+}
+function dropBead() {
+    Matter.World.add(engine.world, bead());
+}
+function dropBlock(box,url) {
+    Matter.World.add(engine.world, block(box,url));
+}
+// engine
+let engine = Matter.Engine.create();
+
+// render
+let render = Matter.Render.create({
+    element: document.body,
+    engine: engine,
+    options: {
+        width: 560,
+        height: 560,
+        wireframes: false,
+        background: '#dddddd'
+    }
+});
+Matter.Render.run(render);
+
+
+
 // Create a Mouse-Interactive object & add it to the World
 render.mouse = Matter.Mouse.create(render.canvas);
 var mouseInteractivity = Matter.MouseConstraint.create(engine, {
@@ -46,6 +79,7 @@ var mouseInteractivity = Matter.MouseConstraint.create(engine, {
 Matter.World.add(engine.world, mouseInteractivity);
 
 // Create a On-Mouseup Event-Handler
+const Events     = Matter.Events;
 Events.on(mouseInteractivity, 'mouseup', function(event) {
   var mouseConstraint = event.source;
   var bodies = engine.world.bodies;
@@ -65,54 +99,6 @@ Events.on(mouseInteractivity, 'mouseup', function(event) {
     }
   }
 });
-//     Matter.Bodies.rectangle(40, 40, 20, 20, {
-//   render: {
-// //     fillStyle: "transparent",
-// //     strokeStyle: "transparent",
-//     text: {
-//       content: "FN",
-//       color: "black",
-//       size: 15
-//     }
-//   }
-// })
-//     return Matter.Bodies.rectangle(40, 40, 50, 50, {
-//             density: 1, // 密度
-//             frictionAir: 0.06, // 空気抵抗
-//             restitution: 1, // 弾力性
-//             friction: 0.01, // 本体の摩擦
-//             render: {
-//                 fillStyle: "transparent",
-//                 strokeStyle: "transparent",
-//                 text: {
-//                   content: "FN",
-//                   color: "black",
-//                   size: 15
-//                     }
-//                     }
-//     });
-}
-function dropBead() {
-    Matter.World.add(engine.world, bead());
-}
-function dropBlock() {
-    Matter.World.add(engine.world, block());
-}
-// engine
-let engine = Matter.Engine.create();
-
-// render
-let render = Matter.Render.create({
-    element: document.body,
-    engine: engine,
-    options: {
-        width: 560,
-        height: 560,
-        wireframes: false,
-        background: '#dddddd'
-    }
-});
-Matter.Render.run(render);
 
 // runner
 let runner = Matter.Runner.create();
@@ -128,4 +114,33 @@ Matter.World.add(engine.world, [
 
 
 // beads
-let dropBeadInterval = setInterval(dropBlock, 1000);
+// let dropBeadInterval = setInterval(dropBlock, 1000);
+
+function sleep(time) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve();
+        }, time);
+    });
+}
+var boxes = ['profile.png', 'instagram.png', 'gallery.png', 'twitter.png','youtube.png'];
+var urls=['',
+'https://www.instagram.com/shojug/',
+'',
+'https://twitter.com/jugjug1542',
+'https://www.youtube.com/@harryshota619'];
+
+for (let step = 0; step < 5; step++){
+  console.log(boxes[step]);
+  dropBlock(boxes[step],urls[step]);
+//   sleep(800);
+// setTimeout(function(){doSomethingLoop(maxCount, ++i)}, 1000);
+  
+}
+    
+  
+//   const intervalId = setInterval(() =>{
+//     countUp();
+//     if(count > 5){　
+//       clearInterval(intervalId);　//intervalIdをclearIntervalで指定している
+//     }}, 800);
