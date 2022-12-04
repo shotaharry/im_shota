@@ -13,9 +13,17 @@ body {
 	min-height: 100%;
 	margin: 0;
     background-color: #212529;
+    font-family:helvertica
 }
 
 canvas {
 	max-width: calc(100vw - 40px);
 	max-height: calc(100vh - 40px);
+}
+
+.click {
+  position: absolute;
+  top: 97%;
+  left: 44%;
+font-family:helvertica
 }
