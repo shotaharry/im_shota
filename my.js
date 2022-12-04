@@ -99,31 +99,7 @@ Events.on(mouseInteractivity, 'mouseup', function(event) {
     }
   }
 });
-let touchStart = null;
-    mouseControl.mouse.element.addEventListener('touchstart', (event) => {
-      if (!mouseControl.body) {
-        touchStart = event;
-      }
-    });
 
-    let space: any = null
-    
-    mouseControl.mouse.element.addEventListener('touchend', (event) => {
-        event.preventDefault();
-        touchStart = null;
-    });
-
-
-    mouseControl.mouse.element.addEventListener('touchmove', (event) => {
-      if (!mouseControl.body && touchStart) {
-          event.preventDefault();
-          let start = touchStart.touches[0].clientY
-          let end = event.touches[0].clientY
-          let delta = start - end
-          window.scrollTo(0, window.scrollY + delta);
-          touchStart = event
-      }
-    });
 // runner
 let runner = Matter.Runner.create();
 Matter.Runner.run(runner, engine);
